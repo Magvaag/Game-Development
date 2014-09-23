@@ -13,8 +13,7 @@ public class Main {
     }
 
     public Main(){
-        JFrame frame = new JFrame();
-        frame.setTitle("Game Development -by ScratchForFun");
+        JFrame frame = new JFrame("Game Development - by ScratchForFun");
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
