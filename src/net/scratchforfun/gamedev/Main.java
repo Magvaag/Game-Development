@@ -2,9 +2,15 @@ package net.scratchforfun.gamedev;
 
 import static net.scratchforfun.gamedev.reference.References.*;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  * Created by Scratch on 9/23/2014.
