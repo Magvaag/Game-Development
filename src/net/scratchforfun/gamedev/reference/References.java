@@ -34,4 +34,11 @@ public class References {
         public static int MOUSE_X;
         public static int MOUSE_Y;
 
+    // CHUNK
+        public static final int TILE_AMOUNT_X = 16;
+        public static final int TILE_AMOUNT_Y = 16;
+        public static final int CHUNK_AMOUNT_X = 5;
+        public static final int CHUNK_AMOUNT_Y = 5;
+
+
 }

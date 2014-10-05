@@ -2,6 +2,8 @@ package net.scratchforfun.gamedev;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.*;
 
 import static net.scratchforfun.gamedev.reference.References.*;
@@ -21,14 +23,34 @@ public class Game {
     public int UPS;
 
     public Game(){
-        map = new Map();
+        map = new Map(new Player());
 
         // Starts the game thread
         thread = new GameThread();
     }
 
     public void update(){
+        map.checkChunks();
 
+        // Update Input
+        updateInput();
+    }
+
+    private void updateInput(){
+        // Keys
+        for(int key : PRESSED_KEYS){
+            if(key == KeyEvent.VK_W)
+                map.player.posY--;
+
+            if(key == KeyEvent.VK_A)
+                map.player.posX--;
+
+            if(key == KeyEvent.VK_S)
+                map.player.posY++;
+
+            if(key == KeyEvent.VK_D)
+                map.player.posX++;
+        }
     }
 
     /**
@@ -51,11 +73,15 @@ public class Game {
         }
 
         private void renderBackground(Graphics g){
-            for(int x = 0; x < 20; x++){
+            for(Chunk chunk : map.loadedChunks){
+                g.drawLine(100+chunk.CHUNK_X*5, 100+chunk.CHUNK_Y*5, 100+chunk.CHUNK_X*5, 100+chunk.CHUNK_Y*5);
+            }
+
+            /*for(int x = 0; x < 20; x++){
                 for(int y = 0; y < 20; y++){
                     g.drawImage(GRASS, x*TILE_SIZE*PIXEL_SIZE, y*TILE_SIZE*PIXEL_SIZE, TILE_SIZE*PIXEL_SIZE, TILE_SIZE*PIXEL_SIZE, null);
                 }
-            }
+            }*/
         }
 
         private void render(Graphics g){
@@ -72,6 +98,9 @@ public class Game {
             drawString(g, "");
             drawString(g, "MouseX: " + MOUSE_X);
             drawString(g, "MouseY: " + MOUSE_Y);
+            drawString(g, "");
+            drawString(g, "PlayerX: " + map.player.posX);
+            drawString(g, "PlayerY: " + map.player.posY);
         }
 
         int spaceY = 15;
