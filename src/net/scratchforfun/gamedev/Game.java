@@ -1,5 +1,7 @@
 package net.scratchforfun.gamedev;
 
+import net.scratchforfun.gamedev.reference.References;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -74,8 +76,19 @@ public class Game {
 
         private void renderBackground(Graphics g){
             for(Chunk chunk : map.loadedChunks){
-                g.drawLine(100+chunk.CHUNK_X*5, 100+chunk.CHUNK_Y*5, 100+chunk.CHUNK_X*5, 100+chunk.CHUNK_Y*5);
+                int posX = chunk.CHUNK_X*TILE_AMOUNT_X*TILE_SIZE*PIXEL_SIZE - map.player.posX*TILE_SIZE*PIXEL_SIZE - TILE_SIZE*PIXEL_SIZE/2 + SCREEN_WIDTH/2;
+                int posY = chunk.CHUNK_Y*TILE_AMOUNT_Y*TILE_SIZE*PIXEL_SIZE - map.player.posY*TILE_SIZE*PIXEL_SIZE - TILE_SIZE*PIXEL_SIZE/2 + SCREEN_HEIGHT/2;
+
+                for(int x = 0; x < chunk.tiles.length; x++){
+                    for(int y = 0; y < chunk.tiles[0].length; y++){
+                        g.drawImage(chunk.tiles[x][y].texture, x*TILE_SIZE*PIXEL_SIZE + posX, y*TILE_SIZE*PIXEL_SIZE + posY, TILE_SIZE*PIXEL_SIZE, TILE_SIZE*PIXEL_SIZE, null);
+                    }
+                }
+                g.drawLine(posX, 0, posX, SCREEN_HEIGHT);
+                g.drawLine(0, posY, SCREEN_WIDTH, posY);
             }
+
+            System.out.println("RENDER");
 
             /*for(int x = 0; x < 20; x++){
                 for(int y = 0; y < 20; y++){

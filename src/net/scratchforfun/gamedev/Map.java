@@ -42,7 +42,7 @@ public class Map {
             for(int y = player_chunk_y-(References.CHUNK_AMOUNT_Y-1)/2; y <= player_chunk_y+(References.CHUNK_AMOUNT_Y-1)/2; y++){
                 if(!loadedChunks.contains(new Chunk(x, y))) {
                     Chunk chunk = new Chunk(x, y);
-                    // TODO: Populate chunk
+                    chunk.populate();
                     loadedChunks.add(chunk);
                 }
             }
