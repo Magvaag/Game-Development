@@ -28,6 +28,7 @@ public class References {
 
     // GAME
         public static Game GAME;
+        public static int SEED;
 
     // LISTENER
         public static List<Integer> PRESSED_KEYS = new ArrayList<Integer>();
