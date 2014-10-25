@@ -28,4 +28,14 @@ public class SimplexNoise {
         }
     }
 
+    public double getNoise(int x, int y){
+       double result = 0;
+
+        for(int i = 0; i < octaves.length; i++){
+            result += octaves[i].noise(x/frequencies[i], y/frequencies[i])*amplitudes[i];
+        }
+
+        return result;
+    }
+
 }

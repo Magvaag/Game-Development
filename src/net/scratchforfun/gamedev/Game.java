@@ -88,8 +88,6 @@ public class Game {
                 g.drawLine(0, posY, SCREEN_WIDTH, posY);
             }
 
-            System.out.println("RENDER");
-
             /*for(int x = 0; x < 20; x++){
                 for(int y = 0; y < 20; y++){
                     g.drawImage(GRASS, x*TILE_SIZE*PIXEL_SIZE, y*TILE_SIZE*PIXEL_SIZE, TILE_SIZE*PIXEL_SIZE, TILE_SIZE*PIXEL_SIZE, null);

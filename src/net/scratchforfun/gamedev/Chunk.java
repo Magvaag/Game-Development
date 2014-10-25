@@ -20,12 +20,37 @@ public class Chunk {
     public void populate(){
         tiles = new Tile[References.TILE_AMOUNT_X][References.TILE_AMOUNT_Y];
 
-        // Noise generation
+        SimplexNoise simplexNoise = new SimplexNoise(7, 0.1);
 
-        // TODO: Fix
-        for(int x = 0; x < tiles.length; x++){
-            for(int y = 0; y < tiles[0].length; y++){
-                tiles[x][y] = new Tile(Material.GRASS);
+        double xStart = CHUNK_X*References.TILE_AMOUNT_X;
+        double xEnd = xStart+References.TILE_AMOUNT_X;
+        double yStart = CHUNK_Y*References.TILE_AMOUNT_Y;
+        double yEnd = yStart+References.TILE_AMOUNT_Y;
+
+        int xResolution = References.TILE_AMOUNT_X;
+        int yResolution = References.TILE_AMOUNT_Y;
+
+        double[][] data = new double[xResolution][yResolution];
+
+        for(int i = 0; i < xResolution; i++){
+            for(int j = 0; j < yResolution; j++){
+                int x = (int)(xStart+(i*(xEnd-xStart)/xResolution));
+                int y = (int)(yStart+(j*(yEnd-yStart)/yResolution));
+
+                double noise = (1+simplexNoise.getNoise(x, y))/2;
+
+                Material material;
+                if(noise < 0.495F)
+                    material = Material.WATER_DEEP;
+                else if(noise < 0.5F)
+                    material = Material.WATER;
+                else if(noise < 0.525F)
+                    material = Material.GRASS;
+                else
+                    material = Material.SAND;
+                tiles[i][j] = new Tile(material);
+
+                data[i][j] = noise;
             }
         }
     }
