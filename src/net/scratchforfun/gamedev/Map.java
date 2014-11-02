@@ -20,8 +20,8 @@ public class Map {
     }
 
     public void checkChunks(){
-        int player_chunk_x = player.posX/References.TILE_AMOUNT_X;
-        int player_chunk_y = player.posY/References.TILE_AMOUNT_Y;
+        int player_chunk_x = Game.floor(player.posX/(double)References.TILE_AMOUNT_X);
+        int player_chunk_y = Game.floor(player.posY/(double)References.TILE_AMOUNT_Y);
 
         // Unload chunks
         unloadChunks(player_chunk_x, player_chunk_y);

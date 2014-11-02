@@ -21,11 +21,17 @@ public class Game {
     public Map map;
     public GameThread thread;
 
+    public float PIXEL_SCALE_WIDTH;
+    public float PIXEL_SCALE_HEIGHT;
+
     public int FPS;
     public int UPS;
 
     public Game(){
         map = new Map(new Player());
+
+        PIXEL_SCALE_WIDTH = References.SCREEN_WIDTH / References.OPTIMISED_SCREEN_WIDTH;
+        PIXEL_SCALE_HEIGHT = References.SCREEN_HEIGHT / References.OPTIMISED_SCREEN_HEIGHT;
 
         // Starts the game thread
         thread = new GameThread();
@@ -55,6 +61,17 @@ public class Game {
         }
     }
 
+    // Rounds the number up
+    public static int ceil(double x){
+        return (int)Math.ceil(x);
+    }
+
+    // Rounds the number down
+    public static int floor(double x){
+        int xi = (int)x;
+        return x<xi ? xi-1 : xi;
+    }
+
     /**
      * Created by Scratch on 9/24/2014.
      */
@@ -76,16 +93,17 @@ public class Game {
 
         private void renderBackground(Graphics g){
             for(Chunk chunk : map.loadedChunks){
-                int posX = chunk.CHUNK_X*TILE_AMOUNT_X*TILE_SIZE*PIXEL_SIZE - map.player.posX*TILE_SIZE*PIXEL_SIZE - TILE_SIZE*PIXEL_SIZE/2 + SCREEN_WIDTH/2;
-                int posY = chunk.CHUNK_Y*TILE_AMOUNT_Y*TILE_SIZE*PIXEL_SIZE - map.player.posY*TILE_SIZE*PIXEL_SIZE - TILE_SIZE*PIXEL_SIZE/2 + SCREEN_HEIGHT/2;
+                int posX = ceil((chunk.CHUNK_X*TILE_AMOUNT_X*TILE_SIZE*PIXEL_SIZE - map.player.posX*TILE_SIZE*PIXEL_SIZE - TILE_SIZE*PIXEL_SIZE/2)*PIXEL_SCALE_WIDTH + SCREEN_WIDTH/2);
+                int posY = ceil((chunk.CHUNK_Y*TILE_AMOUNT_Y*TILE_SIZE*PIXEL_SIZE - map.player.posY*TILE_SIZE*PIXEL_SIZE - TILE_SIZE*PIXEL_SIZE/2)*PIXEL_SCALE_HEIGHT + SCREEN_HEIGHT/2);
 
                 for(int x = 0; x < chunk.tiles.length; x++){
                     for(int y = 0; y < chunk.tiles[0].length; y++){
-                        g.drawImage(chunk.tiles[x][y].texture, x*TILE_SIZE*PIXEL_SIZE + posX, y*TILE_SIZE*PIXEL_SIZE + posY, TILE_SIZE*PIXEL_SIZE, TILE_SIZE*PIXEL_SIZE, null);
+                        g.drawImage(chunk.tiles[x][y].texture, ceil(x*TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_WIDTH) + posX, ceil(y*TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_HEIGHT) + posY, ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_WIDTH), ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_HEIGHT), null);
                     }
                 }
                 g.drawLine(posX, 0, posX, SCREEN_HEIGHT);
                 g.drawLine(0, posY, SCREEN_WIDTH, posY);
+                g.drawString("Chunk("+chunk.CHUNK_X+", "+chunk.CHUNK_Y+")", ceil(posX), ceil(posY+10));
             }
 
             /*for(int x = 0; x < 20; x++){
@@ -96,7 +114,8 @@ public class Game {
         }
 
         private void render(Graphics g){
-
+            // Render player
+            g.drawImage(map.player.texture, References.SCREEN_WIDTH/2 - ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_WIDTH/2), References.SCREEN_HEIGHT/2 - ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_HEIGHT/2), ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_WIDTH), ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_HEIGHT), null);
         }
 
         private void renderForeground(Graphics g){

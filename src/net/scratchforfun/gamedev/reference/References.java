@@ -14,11 +14,14 @@ public class References {
 
     // MAIN
         public static final String TITLE = "Game Development - by ScratchForFun";
-        public static int SCREEN_WIDTH;
-        public static int SCREEN_HEIGHT;
+        public static final boolean FULLSCREEN_WINDOWED = false;
+        public static final float OPTIMISED_SCREEN_WIDTH = 1920;
+        public static final float OPTIMISED_SCREEN_HEIGHT = 1080;
+        public static int SCREEN_WIDTH = 800;
+        public static int SCREEN_HEIGHT = 600;
 
     // SCREEN
-        public static int PIXEL_SIZE = 3; // TODO: Change this to scale!
+        public static float PIXEL_SIZE = 1F;
         public static int TILE_SIZE = 16;
 
     // GAME THREAD

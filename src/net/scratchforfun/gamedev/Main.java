@@ -1,5 +1,7 @@
 package net.scratchforfun.gamedev;
 
+import net.scratchforfun.gamedev.reference.References;
+
 import static net.scratchforfun.gamedev.reference.References.*;
 
 import javax.swing.*;
@@ -22,24 +24,35 @@ public class Main {
     }
 
     public Main(){
+        // You can customize the screen size under References
+        Dimension maxScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        if(SCREEN_WIDTH == 0)
+            SCREEN_WIDTH = maxScreenSize.width;
+        if(SCREEN_HEIGHT == 0)
+            SCREEN_HEIGHT = maxScreenSize.height;
+
         // Game object
         GAME = new Game();
         GAME.screen = GAME.new Screen();
         GAME.start();
 
-        // You can customize the screen size under References
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        if(SCREEN_WIDTH == 0)
-            SCREEN_WIDTH = toolkit.getScreenSize().width;
-        if(SCREEN_HEIGHT == 0)
-            SCREEN_HEIGHT = toolkit.getScreenSize().height;
-
         // Creates a Window
         JFrame frame = new JFrame(TITLE);
-        frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        frame.setUndecorated(true); // TODO: If use of custom screen size, set this to false and pack the window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null); // If you use custom screen size, this will make sure its centered
+        frame.setResizable(false);
+
+        // Determine whether or not go undecorated
+        boolean fullscreen = References.FULLSCREEN_WINDOWED;
+        if(SCREEN_WIDTH == maxScreenSize.width && SCREEN_HEIGHT == maxScreenSize.height)
+            fullscreen = true;
+
+        if(fullscreen){
+            frame.setUndecorated(true);
+            frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        }else{
+            frame.getContentPane().setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+            frame.pack();
+        }
 
         // Frame listeners
         frame.addKeyListener(new KeyListener() {
@@ -105,6 +118,7 @@ public class Main {
         frame.add(GAME.screen);
 
         // Makes the window visible
+        frame.setLocationRelativeTo(null); // If you use custom screen size, this will make sure its centered
         frame.setVisible(true);
     }
 
