@@ -39,7 +39,7 @@ public class Main {
         // Creates a Window
         JFrame frame = new JFrame(TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        //frame.setResizable(false);
 
         // Determine whether or not go undecorated
         boolean fullscreen = References.FULLSCREEN_WINDOWED;
@@ -110,6 +110,7 @@ public class Main {
                 MOUSE_Y = e.getY();
             }
         });
+
 
         // Custom Icon
         // Custom Cursor

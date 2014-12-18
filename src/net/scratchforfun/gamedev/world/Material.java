@@ -1,4 +1,4 @@
-package net.scratchforfun.gamedev;
+package net.scratchforfun.gamedev.world;
 
 import java.util.ArrayList;
 import java.util.List;

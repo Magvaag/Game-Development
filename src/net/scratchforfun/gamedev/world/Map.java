@@ -1,8 +1,10 @@
-package net.scratchforfun.gamedev;
+package net.scratchforfun.gamedev.world;
 
+import net.scratchforfun.gamedev.Game;
+import net.scratchforfun.gamedev.entity.Entity;
 import net.scratchforfun.gamedev.reference.References;
 
-import java.util.ArrayList;
+import java.awt.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -12,16 +14,42 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Map {
 
     List<Chunk> loadedChunks = new CopyOnWriteArrayList<Chunk>();
-    Player player;
+    List<Entity> loadedEntities = new CopyOnWriteArrayList<Entity>();
 
-    public Map(Player player){
-        this.player = player;
+    public Map(){
         checkChunks();
     }
 
+    public void render(Graphics g){
+        for(Chunk chunk : loadedChunks)
+            chunk.render(g);
+
+        for(Entity entity : loadedEntities){
+            entity.render(g);
+        }
+    }
+
+    public void tick(){
+        checkChunks();
+
+        for(Chunk chunk : loadedChunks)
+            chunk.tick();
+
+        for(Entity entity : loadedEntities)
+            entity.tick();
+    }
+
+    public void spawnEntity(Entity entity, int x, int y){
+        entity.position.set(x, y);
+        loadedEntities.add(entity);
+    }
+
     public void checkChunks(){
-        int player_chunk_x = Game.floor(player.posX/(double)References.TILE_AMOUNT_X);
-        int player_chunk_y = Game.floor(player.posY/(double)References.TILE_AMOUNT_Y);
+        System.out.println(Game.INSTANCE.player);
+        System.out.println(Game.INSTANCE.player.position);
+
+        int player_chunk_x = Game.floor(Game.INSTANCE.player.position.x / (double) References.TILE_AMOUNT_X);
+        int player_chunk_y = Game.floor(Game.INSTANCE.player.position.y/(double)References.TILE_AMOUNT_Y);
 
         // Unload chunks
         unloadChunks(player_chunk_x, player_chunk_y);

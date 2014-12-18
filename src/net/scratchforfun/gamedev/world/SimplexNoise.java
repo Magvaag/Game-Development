@@ -1,4 +1,4 @@
-package net.scratchforfun.gamedev;
+package net.scratchforfun.gamedev.world;
 
 import net.scratchforfun.gamedev.reference.References;
 

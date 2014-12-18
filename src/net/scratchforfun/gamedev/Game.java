@@ -1,15 +1,14 @@
 package net.scratchforfun.gamedev;
 
+import net.scratchforfun.gamedev.entity.Player;
 import net.scratchforfun.gamedev.reference.References;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.*;
 
 import static net.scratchforfun.gamedev.reference.References.*;
-import static net.scratchforfun.gamedev.reference.ReferencesImage.GRASS;
 
 /**
  * Created by Scratch on 9/24/2014.
@@ -18,17 +17,24 @@ public class Game {
 
     public Screen screen;
 
-    public Map map;
+    public net.scratchforfun.gamedev.world.Map map;
     public GameThread thread;
+    public Player player;
 
-    public float PIXEL_SCALE_WIDTH;
-    public float PIXEL_SCALE_HEIGHT;
+    public static float PIXEL_SCALE_WIDTH;
+    public static float PIXEL_SCALE_HEIGHT;
 
     public int FPS;
     public int UPS;
 
+    public static Game INSTANCE;
+
     public Game(){
-        map = new Map(new Player());
+        INSTANCE = this;
+
+        player = new Player();
+        map = new net.scratchforfun.gamedev.world.Map();
+        map.spawnEntity(player, 0, 0);
 
         PIXEL_SCALE_WIDTH = References.SCREEN_WIDTH / References.OPTIMISED_SCREEN_WIDTH;
         PIXEL_SCALE_HEIGHT = References.SCREEN_HEIGHT / References.OPTIMISED_SCREEN_HEIGHT;
@@ -37,8 +43,8 @@ public class Game {
         thread = new GameThread();
     }
 
-    public void update(){
-        map.checkChunks();
+    public void tick(){
+        map.tick();
 
         // Update Input
         updateInput();
@@ -48,16 +54,16 @@ public class Game {
         // Keys
         for(int key : PRESSED_KEYS){
             if(key == KeyEvent.VK_W)
-                map.player.posY--;
+                player.position.y--;
 
             if(key == KeyEvent.VK_A)
-                map.player.posX--;
+                player.position.x--;
 
             if(key == KeyEvent.VK_S)
-                map.player.posY++;
+                player.position.y++;
 
             if(key == KeyEvent.VK_D)
-                map.player.posX++;
+                player.position.x++;
         }
     }
 
@@ -81,41 +87,8 @@ public class Game {
             // Clears the screen
             g.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-            // Renders background of screen
-            renderBackground(g);
-
-            // Renders main part of screen
-            render(g);
-
-            // Renders foreground of screen
+            map.render(g);
             renderForeground(g);
-        }
-
-        private void renderBackground(Graphics g){
-            for(Chunk chunk : map.loadedChunks){
-                int posX = ceil((chunk.CHUNK_X*TILE_AMOUNT_X*TILE_SIZE*PIXEL_SIZE - map.player.posX*TILE_SIZE*PIXEL_SIZE - TILE_SIZE*PIXEL_SIZE/2)*PIXEL_SCALE_WIDTH + SCREEN_WIDTH/2);
-                int posY = ceil((chunk.CHUNK_Y*TILE_AMOUNT_Y*TILE_SIZE*PIXEL_SIZE - map.player.posY*TILE_SIZE*PIXEL_SIZE - TILE_SIZE*PIXEL_SIZE/2)*PIXEL_SCALE_HEIGHT + SCREEN_HEIGHT/2);
-
-                for(int x = 0; x < chunk.tiles.length; x++){
-                    for(int y = 0; y < chunk.tiles[0].length; y++){
-                        g.drawImage(chunk.tiles[x][y].texture, ceil(x*TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_WIDTH) + posX, ceil(y*TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_HEIGHT) + posY, ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_WIDTH), ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_HEIGHT), null);
-                    }
-                }
-                g.drawLine(posX, 0, posX, SCREEN_HEIGHT);
-                g.drawLine(0, posY, SCREEN_WIDTH, posY);
-                g.drawString("Chunk("+chunk.CHUNK_X+", "+chunk.CHUNK_Y+")", ceil(posX), ceil(posY+10));
-            }
-
-            /*for(int x = 0; x < 20; x++){
-                for(int y = 0; y < 20; y++){
-                    g.drawImage(GRASS, x*TILE_SIZE*PIXEL_SIZE, y*TILE_SIZE*PIXEL_SIZE, TILE_SIZE*PIXEL_SIZE, TILE_SIZE*PIXEL_SIZE, null);
-                }
-            }*/
-        }
-
-        private void render(Graphics g){
-            // Render player
-            g.drawImage(map.player.texture, References.SCREEN_WIDTH/2 - ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_WIDTH/2), References.SCREEN_HEIGHT/2 - ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_HEIGHT/2), ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_WIDTH), ceil(TILE_SIZE*PIXEL_SIZE*PIXEL_SCALE_HEIGHT), null);
         }
 
         private void renderForeground(Graphics g){
@@ -129,8 +102,8 @@ public class Game {
             drawString(g, "MouseX: " + MOUSE_X);
             drawString(g, "MouseY: " + MOUSE_Y);
             drawString(g, "");
-            drawString(g, "PlayerX: " + map.player.posX);
-            drawString(g, "PlayerY: " + map.player.posY);
+            drawString(g, "PlayerX: " + player.position.x);
+            drawString(g, "PlayerY: " + player.position.y);
         }
 
         int spaceY = 15;

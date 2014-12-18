@@ -1,8 +1,6 @@
 package net.scratchforfun.gamedev.reference;
 
 import net.scratchforfun.gamedev.Game;
-import net.scratchforfun.gamedev.GameThread;
-import net.scratchforfun.gamedev.Map;
 
 import java.util.ArrayList;
 import java.util.List;

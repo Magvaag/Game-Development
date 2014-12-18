@@ -1,4 +1,6 @@
-package net.scratchforfun.gamedev;
+package net.scratchforfun.gamedev.world;
+
+import net.scratchforfun.gamedev.Game;
 
 import java.awt.*;
 import java.util.Random;
@@ -81,7 +83,7 @@ public class SimplexNoiseOctave {
     // 2D Simplex Noise
     public double noise(double xin, double yin){
         double s = (xin+yin)*F2;
-        int i = Game.floor(xin+s);
+        int i = Game.floor(xin + s);
         int j = Game.floor(yin+s);
         double t = (i+j)*G2;
         double X0 = i-t;

@@ -1,4 +1,4 @@
-package net.scratchforfun.gamedev;
+package net.scratchforfun.gamedev.util;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

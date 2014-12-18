@@ -28,7 +28,7 @@ public class GameThread extends Thread implements Runnable {
         while(true){
             loops = 0;
             while(System.currentTimeMillis() > next_game_tick && loops < MAX_FRAMESKIP){
-                GAME.update();
+                GAME.tick();
 
                 next_game_tick += GAME_SKIP_TICKS;
                 updates++;
