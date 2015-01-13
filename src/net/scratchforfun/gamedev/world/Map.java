@@ -5,16 +5,15 @@ import net.scratchforfun.gamedev.entity.Entity;
 import net.scratchforfun.gamedev.reference.References;
 
 import java.awt.*;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.*;
 
 /**
  * Created by Scratch on 9/24/2014.
  */
 public class Map {
 
-    List<Chunk> loadedChunks = new CopyOnWriteArrayList<Chunk>();
-    List<Entity> loadedEntities = new CopyOnWriteArrayList<Entity>();
+    List<Chunk> loadedChunks = new ArrayList<Chunk>();
+    List<Entity> loadedEntities = new ArrayList<Entity>();
 
     public Map(){
         checkChunks();
@@ -59,9 +58,10 @@ public class Map {
     }
 
     private void unloadChunks(int player_chunk_x, int player_chunk_y){
-        for(Chunk chunk : loadedChunks){
+        for(Iterator<Chunk> iterator = loadedChunks.iterator(); iterator.hasNext();){
+            Chunk chunk = iterator.next();
             if(chunk.CHUNK_X > player_chunk_x+(References.CHUNK_AMOUNT_X-1)/2 || chunk.CHUNK_X < player_chunk_x-(References.CHUNK_AMOUNT_X-1)/2 || chunk.CHUNK_Y > player_chunk_y+(References.CHUNK_AMOUNT_Y-1)/2 || chunk.CHUNK_Y < player_chunk_y-(References.CHUNK_AMOUNT_Y-1)/2)
-                loadedChunks.remove(chunk);
+                iterator.remove();
         }
     }
 
