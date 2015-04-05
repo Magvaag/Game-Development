@@ -21,9 +21,10 @@ public class Material {
         resourceIds.add(resourceId);
     }
 
-   // public Material(String[] resourceIds){
-       //resourceIds.
-  //  }
+  /**
+   * public Material(String[] resourceIds){
+   *       resourceIds.
+   */   }
 
     public String getResourceId(int i){
         return resourceIds.get(i);
